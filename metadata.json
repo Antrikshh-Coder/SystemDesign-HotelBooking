@@ -1,0 +1,6 @@
+{
+  "name": "StayEase - Intelligent Hotel Booking System",
+  "description": "A premium luxury hotel booking web application and B.Tech System Design project featuring user authentication, advanced search, interactive room booking, simulated payment processing, and an interactive admin dashboard. Includes full documentation, SQLite schema, Python business logic, and an architectural code viewer for academic submittal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

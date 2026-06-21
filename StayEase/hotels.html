@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Destinations - StayEase</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .star-rating-filter .star {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #cbd5e1;
+      transition: color 0.15s;
+    }
+    .star-rating-filter .star.selected,
+    .star-rating-filter .star:hover {
+      color: var(--color-accent);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav-container" id="se-global-navbar"></nav>
+  </header>
+
+  <main style="max-width: 1200px; padding: 3rem 2rem;">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 2rem; color: var(--color-primary);">Discover Extraordinary Stays</h1>
+      <p style="color: #64748b;">Adjust sliders and select filters to inspect our luxury listings.</p>
+    </div>
+
+    <!-- Left Filters + Right Hotels Grid layout -->
+    <div class="checkout-shell" style="grid-template-columns: 1fr 3fr;">
+      
+      <!-- Filter Sidebar Box -->
+      <aside style="background: white; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 1.5rem; height: fit-content; space-y-6;" class="space-y-6 shadow-md">
+        
+        <!-- Search input box -->
+        <div>
+          <h3 style="font-size: 1rem; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.05em; margin-bottom: 0.75rem;">Seek Destination</h3>
+          <input type="text" id="search-city-input" placeholder="e.g. Miami, Paris..." class="input-field">
+        </div>
+
+        <!-- Price filter slider bar -->
+        <div style="border-t: 1px solid #f1f5f9; padding-top: 1.5rem; margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 style="font-size: 1rem; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.05em;">Max Budget</h3>
+            <span id="filter-price-display" style="font-weight: 700; color: var(--color-accent);">$1500</span>
+          </div>
+          <input type="range" id="filter-price-slider" min="150" max="1500" step="50" value="1500" style="width: 100%; accent-color: var(--color-primary);">
+          <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: #94a3b8; margin-top: 0.25rem;">
+            <span>$150/night</span>
+            <span>$1500/night</span>
+          </div>
+        </div>
+
+        <!-- Rating scale selection -->
+        <div style="border-t: 1px solid #f1f5f9; padding-top: 1.5rem; margin-top: 1.5rem;">
+          <h3 style="font-size: 1rem; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.05em; margin-bottom: 0.5rem;">Minimum Rating</h3>
+          <div class="star-rating-filter" style="display: flex; gap: 0.25rem;">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+          </div>
+        </div>
+
+        <!-- Submit actions -->
+        <div style="border-t: 1px solid #f1f5f9; padding-top: 1.5rem; margin-top: 1.5rem;">
+          <button id="search-submit-btn" class="btn bg-primary text-white w-full" style="margin-bottom: 0.75rem;">Apply Filters</button>
+          <button onclick="resetAllFilters()" class="btn-outline w-full" style="font-size: 0.8125rem; padding: 0.5rem;">Reset All Filters</button>
+        </div>
+
+      </aside>
+
+      <!-- Right Side Grid Card deck -->
+      <section>
+        <div class="grid-cols-3" style="grid-template-columns: repeat(2, minmax(0, 1fr));" id="se-hotels-grid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer id="se-global-footer"></footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/hotels.js"></script>
+</body>
+</html>

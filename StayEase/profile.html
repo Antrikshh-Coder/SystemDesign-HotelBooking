@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile & Bookings - StayEase</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .auth-toggle-link {
+      color: var(--color-accent);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .auth-toggle-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav-container" id="se-global-navbar"></nav>
+  </header>
+
+  <main>
+    <div id="se-profile-container">
+      <!-- Generated dynamically by code triggers depending on log-in status -->
+    </div>
+  </main>
+
+  <footer id="se-global-footer"></footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    /**
+     * USER & CANCELLATION MODULE ENGINE (Client-side)
+     * Provides fully working Login, Registration, and booking list cancellations.
+     */
+    let showRegisterMode = false;
+
+    function renderProfilePage() {
+      const container = document.getElementById("se-profile-container");
+      if (!container) return;
+
+      const user = StayEaseDB.getActiveUser();
+
+      // IF NOT LOGGED IN: Render Authentication Panels
+      if (!user) {
+        if (showRegisterMode) {
+          container.innerHTML = `
+            <div style="max-width: 450px; margin: 0 auto;" class="profile-auth-box shadow-lg animated fadeIn">
+              <h2 style="font-size: 1.75rem; color: var(--color-primary); margin-bottom: 0.5rem; text-align: center;">Register Account</h2>
+              <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">Join StayEase matching academic submission files.</p>
+              
+              <form id="se-register-form" style="display: flex; flex-direction: column; gap:1.25rem;">
+                <div>
+                  <label class="block text-xs font-bold uppercase mb-1 text-slate-500">Full Name</label>
+                  <input type="text" id="reg-name" placeholder="John Doe" class="input-field" required>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase mb-1 text-slate-500">Email Address</label>
+                  <input type="email" id="reg-email" placeholder="john@example.com" class="input-field" required>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase mb-1 text-slate-500">Secret Password</label>
+                  <input type="password" id="reg-pass" placeholder="••••••••" class="input-field" required>
+                </div>
+                <button type="submit" class="btn bg-primary text-white w-full">Sign Up & Log In</button>
+              </form>
+              <p style="font-size: 0.8125rem; text-align: center; margin-top: 1.5rem; color: #64748b;">
+                Already have an accounts? <span class="auth-toggle-link" onclick="toggleAuthMode()">Sign In</span>
+              </p>
+            </div>
+          `;
+          document.getElementById("se-register-form").addEventListener("submit", executeRegistration);
+        } else {
+          container.innerHTML = `
+            <div style="max-width: 450px; margin: 0 auto;" class="profile-auth-box shadow-lg animated fadeIn">
+              <h2 style="font-size: 1.75rem; color: var(--color-primary); margin-bottom: 0.5rem; text-align: center;">Sign In</h2>
+              <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">Access StayEase using pre-seeded accounts parameters.</p>
+              
+              <div style="background: #f8fafc; border: 1px dashed #cbd5e1; padding: 0.75rem; border-radius: var(--radius-xs); margin-bottom: 1.5rem; font-size: 0.75rem; color: #475569;">
+                <strong>Viva Demo logins:</strong><br>
+                Email: <span class="font-mono">aarav@stayease.com</span> | Pass: <span class="font-mono">password123</span><br>
+                Admin: <span class="font-mono">admin@stayease.com</span> | Pass: <span class="font-mono">admin</span>
+              </div>
+
+              <form id="se-login-form" style="display: flex; flex-direction: column; gap:1.25rem;">
+                <div>
+                  <label class="block text-xs font-bold uppercase mb-1 text-slate-500">Email Address</label>
+                  <input type="email" id="log-email" placeholder="aarav@stayease.com" class="input-field" required>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase mb-1 text-slate-500">Password</label>
+                  <input type="password" id="log-pass" placeholder="••••••••" class="input-field" required>
+                </div>
+                <button type="submit" class="btn bg-primary text-white w-full">Access Account</button>
+              </form>
+              <p style="font-size: 0.8125rem; text-align: center; margin-top: 1.5rem; color: #64748b;">
+                New to the system? <span class="auth-toggle-link" onclick="toggleAuthMode()">Register Now</span>
+              </p>
+            </div>
+          `;
+          document.getElementById("se-login-form").addEventListener("submit", executeLogin);
+        }
+        return;
+      }
+
+      // IF LOGGED IN: Render Dashboard & Booking histories
+      const bookings = StayEaseDB.getBookings().filter(b => b.user_id === user.user_id);
+
+      container.innerHTML = `
+        <div class="profile-shell animated fadeIn">
+          
+          <!-- Left side profile stats -->
+          <aside style="background: white; border: 1px solid #cbd5e1; border-radius: var(--radius-md); padding: 2rem; height: fit-content;" class="shadow-md">
+            <div style="display: flex; flex-direction: column; items-center; justify-content: center; text-align: center; margin-bottom: 2rem;">
+              <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 2.25rem; font-weight: 700; margin-bottom: 1rem; margin-left: auto; margin-right: auto;">
+                ${user.name.charAt(0).toUpperCase()}
+              </div>
+              <h2 style="font-size: 1.5rem; color: var(--color-primary);">${user.name}</h2>
+              <p style="font-size: 0.875rem; color: #64748b;">${user.email}</p>
+            </div>
+            
+            <div style="border-t pt-4 space-y-3" class="space-y-3 text-sm">
+              <div style="display: flex; justify-content: space-between; border-b pb-2;">
+                <span class="text-slate-400">Lodged Bookings:</span>
+                <span class="font-bold">${bookings.length} confirmed</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-b pb-2; margin-top:0.75rem;">
+                <span class="text-slate-400">Total Invested:</span>
+                <span class="font-bold text-primary">$${bookings.reduce((sum, b) => b.booking_status === 'CONFIRMED' ? sum + b.amount : sum, 0)}</span>
+              </div>
+            </div>
+            
+            <button onclick="logoutSession()" class="btn bg-danger text-white w-full" style="margin-top: 2rem; font-size: 0.875rem;">Sign Out Session</button>
+          </aside>
+
+          <!-- Right side reservations details -->
+          <section style="background: white; border: 1px solid #cbd5e1; border-radius: var(--radius-md); padding: 2rem;" class="shadow-md">
+            <h2 style="font-size: 1.5rem; color: var(--color-primary); margin-bottom: 1.5rem; border-b pb-3;">My Stay Booking History</h2>
+            
+            ${bookings.length === 0 ? `
+              <div style="text-align: center; padding: 4rem 2rem;">
+                <p style="color: #64748b; margin-bottom: 1.5rem;">You haven't booked any luxury accommodations yet.</p>
+                <a href="hotels.html" class="btn bg-primary text-white">Find Your First Stay</a>
+              </div>
+            ` : `
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                  <thead>
+                    <tr style="border-b; color: #64748b; font-size: 0.75rem; text-transform: uppercase;">
+                      <th style="padding: 1rem 0.5rem;">Booking Ref ID</th>
+                      <th style="padding: 1rem 0.5rem;">Hotel</th>
+                      <th style="padding: 1rem 0.5rem;">Room</th>
+                      <th style="padding: 1rem 0.5rem;">Dates</th>
+                      <th style="padding: 1rem 0.5rem;">Amount</th>
+                      <th style="padding: 1rem 0.5rem;">Status</th>
+                      <th style="padding: 1rem 0.5rem; text-align: center;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${bookings.map(book => {
+                      const isConfirmed = book.booking_status === "CONFIRMED";
+                      return `
+                        <tr style="border-b" class="text-sm">
+                          <td style="padding: 1rem 0.5rem; font-mono font-bold text-primary">${book.booking_id}</td>
+                          <td style="padding: 1rem 0.5rem; font-weight: 600;">${book.hotel_name}</td>
+                          <td style="padding: 1rem 0.5rem; font-size:0.75rem;">${book.room_type}</td>
+                          <td style="padding: 1rem 0.5rem; font-size:0.75rem;" class="font-mono">${book.check_in} to ${book.check_out}</td>
+                          <td style="padding: 1rem 0.5rem; font-bold font-mono">$${book.amount}</td>
+                          <td style="padding: 1rem 0.5rem;">
+                            <span class="badge ${isConfirmed ? 'bg-success' : 'bg-danger'}">${book.booking_status}</span>
+                          </td>
+                          <td style="padding: 1rem 0.5rem; text-align: center;">
+                            ${isConfirmed ? `
+                              <button onclick="cancelStayBooking('${book.booking_id}')" class="btn bg-danger text-white" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; border-radius: var(--radius-xs);">Cancel</button>
+                            ` : `
+                              <span style="color:#cbd5e1; font-size: 0.75rem;">N/A</span>
+                            `}
+                          </td>
+                        </tr>
+                      `;
+                    }).join("")}
+                  </tbody>
+                </table>
+              </div>
+            `}
+          </section>
+
+        </div>
+      `;
+    }
+
+    // 1. User Register process helper
+    function executeRegistration(e) {
+      e.preventDefault();
+      const name = document.getElementById("reg-name").value.trim();
+      const email = document.getElementById("reg-email").value.trim();
+      const password = document.getElementById("reg-pass").value;
+
+      if (!name || !email || !password) return;
+
+      const users = StayEaseDB.getUsers();
+      if (users.some(u => u.email === email)) {
+        alert("Account error: A user with this email registry already exists.");
+        return;
+      }
+
+      const newUser = {
+        user_id: users.length + 1,
+        name: name,
+        email: email,
+        password: password
+      };
+
+      users.push(newUser);
+      StayEaseDB.saveUsers(users);
+      StayEaseDB.setActiveUser(newUser);
+
+      location.reload();
+    }
+
+    // 2. User Login process helper
+    function executeLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("log-email").value.trim();
+      const password = document.getElementById("log-pass").value;
+
+      const users = StayEaseDB.getUsers();
+      const user = users.find(u => u.email === email && u.password === password);
+
+      if (!user) {
+        alert("Authentication failed: Incorrect email address or password parameter.");
+        return;
+      }
+
+      StayEaseDB.setActiveUser(user);
+      location.reload();
+    }
+
+    // 3. User cancellation algorithm processor (matches cancellation_module)
+    function cancelStayBooking(bookingId) {
+      /**
+       * ACADEMIC CANCELLATION ALGORITHM STEP-BY-STEP
+       * 1. Retrieve the list of active bookings from storage memory (localStorage).
+       * 2. Find the index corresponding to the given bookingId.
+       * 3. Evaluate booking status. If already cancelled, halt.
+       * 4. Change booking_status value to 'CANCELLED'.
+       * 5. Capture the room_id associated with this booking.
+       * 6. Revert room status to vacancies (availability = 1) inside rooms dataset.
+       * 7. Save modifications back into central database models.
+       * 8. Alert the occupant and refresh dashboard counters in real time.
+       */
+      if (confirm(`Are you sure you wish to cancel booking ${bookingId}?`)) {
+        const bookings = StayEaseDB.getBookings();
+        const indexBook = bookings.findIndex(b => b.booking_id === bookingId);
+
+        if (indexBook === -1) {
+          alert("Cancel Error: Booking Reference ID error.");
+          return;
+        }
+
+        const b = bookings[indexBook];
+        b.booking_status = "CANCELLED";
+
+        // Vacating the Room allocation - Availability set to 1 (Available)
+        const rooms = StayEaseDB.getRooms();
+        const idxRoom = rooms.findIndex(r => r.room_id === b.room_id);
+        if (idxRoom !== -1) {
+          rooms[idxRoom].availability = 1;
+          StayEaseDB.saveRooms(rooms);
+        }
+
+        // Save Bookings list modifications
+        StayEaseDB.saveBookings(bookings);
+        alert(`Booking ${bookingId} has been cancelled successfully, and the room is once again available!`);
+        location.reload();
+      }
+    }
+
+    function logoutSession() {
+      StayEaseDB.logout();
+      location.reload();
+    }
+
+    function toggleAuthMode() {
+      showRegisterMode = !showRegisterMode;
+      renderProfilePage();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProfilePage();
+    });
+  </script>
+</body>
+</html>

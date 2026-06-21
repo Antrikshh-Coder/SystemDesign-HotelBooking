@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StayEase - Intelligent Premium Hotel Booking</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Global Navigation Header -->
+  <header>
+    <nav class="nav-container" id="se-global-navbar"></nav>
+  </header>
+
+  <!-- Hero Luxury Branding Spot -->
+  <section class="banner-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.75)), url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover; padding: 10rem 2rem; color: white; text-align: center;">
+    <div style="max-width: 800px; margin: 0 auto; animation: fadeIn 0.4s ease-out;">
+      <span style="font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; color: var(--color-warm-accent); letter-spacing: 0.2em; display: inline-block; margin-bottom: 1rem;">Experience True Elegance</span>
+      <h1 style="font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.5rem;">Intelligent Reservations, Crafted in Pure Luxury</h1>
+      <p style="color: #cbd5e1; font-size: 1.2rem; margin-bottom: 2.5rem; font-weight: 300;">Explore high-end hotels across Paris, Miami, New York, and Zermatt with dynamic availability checks and absolute transaction safety.</p>
+      
+      <!-- Unified Mini Search Form -->
+      <div style="background: white; padding: 1rem; border-radius: var(--radius-md); box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; gap: 1rem; max-width: 600px; margin: 0 auto; flex-direction: row;" class="flex-row">
+        <input type="text" id="search-city-input" placeholder="Where do you wish to stay? (e.g. Miami, Paris)" class="input-field" style="border: 1px solid #e2e8f0;">
+        <button id="search-submit-btn" class="btn bg-primary text-white" style="white-space: nowrap;">Search Hotels</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Stream -->
+  <main>
+    <!-- Featured Destinations -->
+    <section style="margin-bottom: 5rem;">
+      <div style="text-align: center; margin-bottom: 3.5rem;">
+        <span style="text-transform: uppercase; color: var(--color-accent); font-weight: 700; font-size: 0.8125rem; letter-spacing: 0.1em;">Sophisticated Locations</span>
+        <h2 style="font-size: 2.5rem; color: var(--color-primary); margin-top: 0.5rem;">Featured Luxury Destinations</h2>
+      </div>
+      
+      <!-- List Items (Simulated cards) -->
+      <div class="grid-cols-3" id="se-hotels-grid"></div>
+    </section>
+
+    <!-- Project Specifications/Academic Highlights -->
+    <section style="background: white; border-radius: var(--radius-md); padding: 3rem; border: 1px solid #e2e8f0; margin-bottom: 4rem;">
+      <div class="grid-cols-3" style="gap: 3rem;">
+        <div style="text-align: center;">
+          <h3 style="font-size: 1.5rem; color: var(--color-primary); margin-bottom: 0.75rem;">1. Safe Allocation</h3>
+          <p style="font-size: 0.9375rem; color: #475569;">Atomic vacancy verification algorithms safeguard users from structural double-allocations.</p>
+        </div>
+        <div style="text-align: center;">
+          <h3 style="font-size: 1.5rem; color: var(--color-primary); margin-bottom: 0.75rem;">2. Transparent Codes</h3>
+          <p style="font-size: 0.9375rem; color: #475569;">Highly structured procedures mapped in simple, standard Python and SQLite models for academic success.</p>
+        </div>
+        <div style="text-align: center;">
+          <h3 style="font-size: 1.5rem; color: var(--color-primary); margin-bottom: 0.75rem;">3. Dashboard Analytics</h3>
+          <p style="font-size: 0.9375rem; color: #475569;">Track system variables, revenues, occupancy percentages, and database metrics dynamically.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials / Customer Reviews -->
+    <section style="margin-bottom: 5rem;">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <h2 style="font-size: 2rem; color: var(--color-primary);">Guest Appreciations</h2>
+      </div>
+      <div class="grid-cols-3">
+        <div style="background: white; padding: 2rem; border-radius: var(--radius-sm); border: 1px solid #e2e8f0;">
+          <span style="color: var(--color-accent); font-size: 1.5rem;">★★★★★</span>
+          <p style="font-style: italic; margin: 1rem 0;">"Staying at the Grand Oasis was breathtaking. The checking system was flawless and the confirmation was instantaneous!"</p>
+          <strong>- Aarav S.</strong>
+        </div>
+        <div style="background: white; padding: 2rem; border-radius: var(--radius-sm); border: 1px solid #e2e8f0;">
+          <span style="color: var(--color-accent); font-size: 1.5rem;">★★★★★</span>
+          <p style="font-style: italic; margin: 1rem 0;">"StayEase provides an exceptional, luxury booking flow. No complicated steps, just smooth booking and payment checks."</p>
+          <strong>- Sarah M.</strong>
+        </div>
+        <div style="background: white; padding: 2rem; border-radius: var(--radius-sm); border: 1px solid #e2e8f0;">
+          <span style="color: var(--color-accent); font-size: 1.5rem;">★★★★★</span>
+          <p style="font-style: italic; margin: 1rem 0;">"Remarkable interface. The system architecture diagram and clean design prove highly educational for academics."</p>
+          <strong>- Prof. Sharma, CSE Dept.</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer id="se-global-footer"></footer>
+
+  <!-- Engines -->
+  <script src="js/app.js"></script>
+  <script src="js/hotels.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Simulation - StayEase</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <nav class="nav-container" id="se-global-navbar"></nav>
+  </header>
+
+  <main style="max-width: 1000px;">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 2rem; color: var(--color-primary);">Secure Transaction Checkout</h1>
+      <p style="color: #64748b;">Complete transaction processing. Enter simulated security properties below.</p>
+    </div>
+
+    <div class="payment-grid">
+      
+      <!-- Primary Transaction column -->
+      <section style="background: white; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 2rem;" class="shadow-md">
+        
+        <!-- Channels Selector Tabs -->
+        <h3 style="font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 1rem;">Select Payment Method</h3>
+        <div class="payment-method-selector">
+          <button class="payment-method-tab" data-method="card">💳 Credit/Debit</button>
+          <button class="payment-method-tab" data-method="upi">📲 UPI string</button>
+          <button class="payment-method-tab" data-method="net">🏦 Net Banking</button>
+        </div>
+
+        <!-- Form fields changes dynamically on select -->
+        <form id="se-payment-form">
+          <div id="se-payment-custom-fields" style="margin-bottom: 1.5rem;"></div>
+          
+          <div style="background: #f8fafc; padding: 1.25rem; border-radius: var(--radius-xs); border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+            <div>
+              <span class="text-sm font-semibold uppercase text-slate-400">Total Charged Amount</span>
+              <p class="text-xs text-slate-400">All taxes and transaction surcharges are included.</p>
+            </div>
+            <span id="se-payment-total-amount" style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-primary);">$0.00</span>
+          </div>
+
+          <button type="submit" class="btn bg-accent text-white w-full">Verify & Authorize Payment</button>
+        </form>
+
+      </section>
+
+      <!-- Right order breakdown summary card -->
+      <aside style="background: white; border: 1px solid #cbd5e1; border-radius: var(--radius-md); padding: 1.5rem; height: fit-content;">
+        <h3 style="font-family: var(--font-display); font-size: 1rem; text-transform: uppercase; color: var(--color-primary); letter-spacing: 0.1em; border-b pb-2 mb-4;">Order Breakdown</h3>
+        <div id="se-payment-billing-summary"></div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer id="se-global-footer"></footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/payment.js"></script>
+</body>
+</html>
